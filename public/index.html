@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayEase India - Premium Hotel Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <i data-lucide="hotel" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold text-primary-600 dark:text-primary-400">StayEase India</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Home</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Hotels</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</a>
+                </div>
+
+                <!-- Auth Buttons & Dark Mode Toggle -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <div id="authButtons">
+                        <button id="loginBtn" class="px-4 py-2 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors">Login</button>
+                        <button id="signupBtn" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">Sign Up</button>
+                    </div>
+                    <div id="userMenu" class="hidden">
+                        <div class="relative">
+                            <button id="userMenuBtn" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <span id="userName"></span>
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            </button>
+                            <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2">
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">My Bookings</a>
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                                <button id="logoutBtn" class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden border-t dark:border-gray-700 py-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Home</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Hotels</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</a>
+                    <div class="flex items-center space-x-4 pt-4 border-t dark:border-gray-700">
+                        <button class="px-4 py-2 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors">Login</button>
+                        <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Search -->
+    <section class="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Incredible India</h1>
+                <p class="text-xl text-primary-100">Book premium hotels across India's most beautiful destinations</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="bg-white rounded-xl shadow-2xl p-6 max-w-6xl mx-auto">
+                <form id="searchForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Location -->
+                    <div class="relative">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <div class="relative">
+                            <i data-lucide="map-pin" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="text" id="location" name="location" placeholder="Mumbai, Delhi, Goa, Rajasthan..." class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900">
+                        </div>
+                    </div>
+
+                    <!-- Check-in Date -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Check-in</label>
+                        <div class="relative">
+                            <i data-lucide="calendar" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="date" id="checkIn" name="checkIn" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900">
+                        </div>
+                    </div>
+
+                    <!-- Check-out Date -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Check-out</label>
+                        <div class="relative">
+                            <i data-lucide="calendar" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="date" id="checkOut" name="checkOut" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900">
+                        </div>
+                    </div>
+
+                    <!-- Guests -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Guests</label>
+                        <div class="relative">
+                            <i data-lucide="users" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <select id="guests" name="guests" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 appearance-none">
+                                <option value="1">1 Adult</option>
+                                <option value="2">2 Adults</option>
+                                <option value="3">2 Adults, 1 Child</option>
+                                <option value="4">3 Adults</option>
+                                <option value="5">4+ Adults</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Search Button -->
+                <div class="mt-6 text-center">
+                    <button id="searchBtn" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center space-x-2">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                        <span>Search Hotels</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters Sidebar -->
+            <aside class="lg:w-80">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sticky top-24">
+                    <h2 class="text-xl font-bold mb-6 flex items-center">
+                        <i data-lucide="filter" class="w-5 h-5 mr-2"></i>
+                        Filters
+                    </h2>
+
+                    <!-- Price Range -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">Price Range</h3>
+                        <div class="space-y-3">
+                            <input type="range" id="priceRange" min="0" max="50000" value="15000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                <span>₹0</span>
+                                <span id="priceValue">₹15,000</span>
+                                <span>₹50,000+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Star Rating -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">Star Rating</h3>
+                        <div class="space-y-2" id="starRatingFilters">
+                            <label class="flex items-center">
+                                <input type="checkbox" value="5" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 star-filter">
+                                <span class="ml-2 flex items-center">
+                                    <span class="text-yellow-400">★★★★★</span>
+                                    <span class="ml-2 text-sm">5 Stars</span>
+                                </span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="4" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 star-filter">
+                                <span class="ml-2 flex items-center">
+                                    <span class="text-yellow-400">★★★★</span>
+                                    <span class="ml-2 text-sm">4 Stars</span>
+                                </span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="3" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 star-filter">
+                                <span class="ml-2 flex items-center">
+                                    <span class="text-yellow-400">★★★</span>
+                                    <span class="ml-2 text-sm">3 Stars</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Room Type -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">Room Type</h3>
+                        <div class="space-y-2" id="roomTypeFilters">
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Single" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 room-type-filter">
+                                <span class="ml-2 text-sm">Single Room</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Double" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 room-type-filter">
+                                <span class="ml-2 text-sm">Double Room</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Deluxe" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 room-type-filter">
+                                <span class="ml-2 text-sm">Deluxe Room</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Suite" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 room-type-filter">
+                                <span class="ml-2 text-sm">Suite</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Amenities -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">Amenities</h3>
+                        <div class="space-y-2" id="amenityFilters">
+                            <label class="flex items-center">
+                                <input type="checkbox" value="WiFi" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 amenity-filter">
+                                <span class="ml-2 text-sm">Free WiFi</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Pool" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 amenity-filter">
+                                <span class="ml-2 text-sm">Swimming Pool</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="AC" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 amenity-filter">
+                                <span class="ml-2 text-sm">Air Conditioning</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Spa" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 amenity-filter">
+                                <span class="ml-2 text-sm">Spa & Wellness</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Restaurant" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 amenity-filter">
+                                <span class="ml-2 text-sm">Restaurant</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Heritage" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500 amenity-filter">
+                                <span class="ml-2 text-sm">Heritage Property</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Clear Filters Button -->
+                    <button id="clearFilters" class="w-full py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        Clear All Filters
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Hotel Listings -->
+            <section class="flex-1">
+                <!-- Results Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="resultsTitle" class="text-2xl font-bold">Available Hotels</h2>
+                    <div class="flex items-center space-x-4">
+                        <span id="resultsCount" class="text-gray-600 dark:text-gray-400">Loading...</span>
+                        <select id="sortBy" class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-800">
+                            <option value="recommended">Sort by: Recommended</option>
+                            <option value="price_asc">Price: Low to High</option>
+                            <option value="price_desc">Price: High to Low</option>
+                            <option value="rating">Star Rating</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="text-center py-12">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                    <p class="text-gray-600 dark:text-gray-400">Loading hotels...</p>
+                </div>
+
+                <!-- Hotel Grid -->
+                <div id="hotelGrid" class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+                    <!-- Hotels will be dynamically loaded here -->
+                </div>
+
+                <!-- Pagination -->
+                <div id="pagination" class="flex justify-center items-center space-x-4 mt-8">
+                    <button id="prevPage" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
+                    <span id="pageInfo" class="text-gray-600 dark:text-gray-400">Page 1 of 1</span>
+                    <button id="nextPage" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="authModalTitle" class="text-xl font-bold">Login</h3>
+                <button id="closeAuthModal" class="text-gray-500 hover:text-gray-700">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <form id="authForm">
+                <div id="nameField" class="mb-4 hidden">
+                    <label class="block text-sm font-medium mb-2">Full Name</label>
+                    <input type="text" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Password</label>
+                    <input type="password" id="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+                </div>
+                
+                <button type="submit" id="authSubmitBtn" class="w-full bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 transition-colors">
+                    Login
+                </button>
+            </form>
+            
+            <div class="mt-4 text-center">
+                <button id="switchAuthMode" class="text-primary-600 hover:text-primary-700">
+                    Don't have an account? Sign up
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Book Your Stay</h3>
+                <button id="closeBookingModal" class="text-gray-500 hover:text-gray-700">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div id="bookingContent">
+                <!-- Booking form will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the JavaScript -->
+    <script src="js/app.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
