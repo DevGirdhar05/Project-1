@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayEase - Hotel Booking Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <i data-lucide="hotel" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold text-primary-600 dark:text-primary-400">StayEase</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Home</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Hotels</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</a>
+                </div>
+
+                <!-- Auth Buttons & Dark Mode Toggle -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <button class="px-4 py-2 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors">Login</button>
+                    <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">Sign Up</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden border-t dark:border-gray-700 py-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Home</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Hotels</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</a>
+                    <div class="flex items-center space-x-4 pt-4 border-t dark:border-gray-700">
+                        <button class="px-4 py-2 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors">Login</button>
+                        <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Search -->
+    <section class="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Find Your Perfect Stay</h1>
+                <p class="text-xl text-primary-100">Discover amazing hotels at unbeatable prices</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="bg-white rounded-xl shadow-2xl p-6 max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Location -->
+                    <div class="relative">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <div class="relative">
+                            <i data-lucide="map-pin" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="text" placeholder="Where are you going?" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900">
+                        </div>
+                    </div>
+
+                    <!-- Check-in Date -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Check-in</label>
+                        <div class="relative">
+                            <i data-lucide="calendar" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="date" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900">
+                        </div>
+                    </div>
+
+                    <!-- Check-out Date -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Check-out</label>
+                        <div class="relative">
+                            <i data-lucide="calendar" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="date" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900">
+                        </div>
+                    </div>
+
+                    <!-- Guests -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Guests</label>
+                        <div class="relative">
+                            <i data-lucide="users" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 appearance-none">
+                                <option>1 Adult</option>
+                                <option>2 Adults</option>
+                                <option>2 Adults, 1 Child</option>
+                                <option>3 Adults</option>
+                                <option>4+ Adults</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <div class="mt-6 text-center">
+                    <button class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center space-x-2">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                        <span>Search Hotels</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters Sidebar -->
+            <aside class="lg:w-80">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sticky top-24">
+                    <h2 class="text-xl font-bold mb-6 flex items-center">
+                        <i data-lucide="filter" class="w-5 h-5 mr-2"></i>
+                        Filters
+                    </h2>
+
+                    <!-- Price Range -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">Price Range</h3>
+                        <div class="space-y-3">
+                            <input type="range" min="0" max="500" value="250" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                <span>$0</span>
+                                <span>$500+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Star Rating -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">Star Rating</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 flex items-center">
+                                    <span class="text-yellow-400">★★★★★</span>
+                                    <span class="ml-2 text-sm">5 Stars</span>
+                                </span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 flex items-center">
+                                    <span class="text-yellow-400">★★★★</span>
+                                    <span class="ml-2 text-sm">4 Stars</span>
+                                </span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 flex items-center">
+                                    <span class="text-yellow-400">★★★</span>
+                                    <span class="ml-2 text-sm">3 Stars</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Room Type -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">Room Type</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Single Room</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Double Room</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Deluxe Room</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Suite</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Amenities -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">Amenities</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Free WiFi</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Swimming Pool</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Air Conditioning</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Fitness Center</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Free Parking</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Restaurant</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                <span class="ml-2 text-sm">Pet Friendly</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Clear Filters Button -->
+                    <button class="w-full py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        Clear All Filters
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Hotel Listings -->
+            <section class="flex-1">
+                <!-- Results Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Hotels in New York</h2>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-600 dark:text-gray-400">1,234 properties found</span>
+                        <select class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-800">
+                            <option>Sort by: Recommended</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Star Rating</option>
+                            <option>Guest Rating</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Hotel Grid -->
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+                    <!-- Hotel Card 1 -->
+                    <article class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                        <div class="relative">
+                            <img src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc=" alt="Grand Plaza Hotel" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded-lg text-sm font-semibold">
+                                20% OFF
+                            </div>
+                            <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Grand Plaza Hotel</h3>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400">★★★★★</span>
+                                    <span class="ml-1 text-sm text-gray-600 dark:text-gray-400">5.0</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mb-3 flex items-center">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+                                Manhattan, New York
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-1 rounded-full text-xs">Deluxe Room</span>
+                                <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full text-xs">Free WiFi</span>
+                                <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs">Pool</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$199</span>
+                                    <span class="text-gray-600 dark:text-gray-400">/night</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-4 py-2 border border-primary-600 text-primary-600 dark:text-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">
+                                        View Details
+                                    </button>
+                                    <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Hotel Card 2 -->
+                    <article class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                        <div class="relative">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKFoo8y4kLV98oUwTZTAQCzqmlJUqOR0NLFg&s" alt="Luxury Suites Downtown" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Luxury Suites Downtown</h3>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400">★★★★</span>
+                                    <span class="ml-1 text-sm text-gray-600 dark:text-gray-400">4.8</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mb-3 flex items-center">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+                                Brooklyn, New York
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-1 rounded-full text-xs">Suite</span>
+                                <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full text-xs">Free WiFi</span>
+                                <span class="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded-full text-xs">Gym</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$299</span>
+                                    <span class="text-gray-600 dark:text-gray-400">/night</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-4 py-2 border border-primary-600 text-primary-600 dark:text-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">
+                                        View Details
+                                    </button>
+                                    <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Hotel Card 3 -->
+                    <article class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                        <div class="relative">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlPWOnFVw7KNAT1jnySzwcq_4CxW8WkrMFlA&s" alt="Budget Inn Central" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Budget Inn Central</h3>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400">★★★</span>
+                                    <span class="ml-1 text-sm text-gray-600 dark:text-gray-400">4.2</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mb-3 flex items-center">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+                                Queens, New York
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-1 rounded-full text-xs">Double Room</span>
+                                <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full text-xs">Free WiFi</span>
+                                <span class="bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 px-2 py-1 rounded-full text-xs">Parking</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$89</span>
+                                    <span class="text-gray-600 dark:text-gray-400">/night</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-4 py-2 border border-primary-600 text-primary-600 dark:text-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">
+                                        View Details
+                                    </button>
+                                    <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Hotel Card 4 -->
+                    <article class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWx8ZW58MHx8MHx8fDA%3D" alt="Boutique Hotel SoHo" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 left-4 bg-gray-800 text-white px-2 py-1 rounded-lg text-sm font-semibold">
+                                SOLD OUT
+                            </div>
+                            <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                        </div>
+                        <div class="p-6 opacity-75">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Boutique Hotel SoHo</h3>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400">★★★★★</span>
+                                    <span class="ml-1 text-sm text-gray-600 dark:text-gray-400">4.9</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mb-3 flex items-center">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+                                SoHo, New York
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-1 rounded-full text-xs">Deluxe Room</span>
+                                <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full text-xs">Free WiFi</span>
+                                <span class="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded-full text-xs">Restaurant</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$349</span>
+                                    <span class="text-gray-600 dark:text-gray-400">/night</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button disabled class="px-4 py-2 border border-gray-300 text-gray-400 rounded-lg cursor-not-allowed">
+                                        View Details
+                                    </button>
+                                    <button disabled class="px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed">
+                                        Sold Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Pagination -->
+                <nav class="flex justify-center items-center space-x-2" aria-label="Pagination">
+                    <button class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button class="px-3 py-2 bg-primary-600 text-white rounded-lg">1</button>
+                    <button class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">2</button>
+                    <button class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">3</button>
+                    <span class="px-3 py-2 text-gray-500">...</span>
+                    <button class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">25</button>
+                    <button class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </nav>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                            <i data-lucide="hotel" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-primary-400">StayEase</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Your trusted partner for finding the perfect accommodation worldwide.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- About Us -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Our Story</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Press</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Safety</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Cancellation</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Accessibility</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 StayEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const theme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Set minimum date for check-in and check-out
+        const today = new Date().toISOString().split('T')[0];
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        dateInputs.forEach(input => {
+            input.setAttribute('min', today);
+        });
+
+        // Update check-out minimum date when check-in changes
+        const checkinInput = dateInputs[0];
+        const checkoutInput = dateInputs[1];
+
+        if (checkinInput && checkoutInput) {
+            checkinInput.addEventListener('change', function() {
+                const checkinDate = new Date(this.value);
+                checkinDate.setDate(checkinDate.getDate() + 1);
+                const minCheckout = checkinDate.toISOString().split('T')[0];
+                checkoutInput.setAttribute('min', minCheckout);
+                
+                // Clear checkout if it's before the new minimum
+                if (checkoutInput.value && checkoutInput.value <= this.value) {
+                    checkoutInput.value = '';
+                }
+            });
+        }
+
+        // Add loading state to search button
+        const searchButton = document.querySelector('button[type="submit"], button:has(i[data-lucide="search"])');
+        if (searchButton) {
+            searchButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.disabled = true;
+                this.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Searching...</span>';
+                
+                // Simulate search delay
+                setTimeout(() => {
+                    this.disabled = false;
+                    this.innerHTML = '<i data-lucide="search" class="w-5 h-5"></i><span>Search Hotels</span>';
+                    lucide.createIcons();
+                }, 2000);
+            });
+        }
+
+        // Add heart toggle functionality
+        document.querySelectorAll('i[data-lucide="heart"]').forEach(heart => {
+            heart.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('fill-current');
+                this.classList.toggle('text-red-500');
+            });
+        });
+
+        // Filter functionality
+        const filterInputs = document.querySelectorAll('input[type="checkbox"], input[type="range"]');
+        filterInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                // Here you would typically filter the hotel results
+                console.log('Filter changed:', this.type, this.checked || this.value);
+            });
+        });
+
+        // Clear filters functionality
+        const clearFiltersBtn = document.querySelector('button:contains("Clear All Filters")');
+        if (clearFiltersBtn) {
+            clearFiltersBtn.addEventListener('click', function() {
+                filterInputs.forEach(input => {
+                    if (input.type === 'checkbox') {
+                        input.checked = false;
+                    } else if (input.type === 'range') {
+                        input.value = input.getAttribute('max') / 2;
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
